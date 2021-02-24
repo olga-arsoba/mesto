@@ -3,7 +3,6 @@
     border-radius: 2px;
     width: 358px;
     height: 50px;
-    width: 100%;
     margin-bottom: 37px;
     padding: 0;
     cursor: pointer;
@@ -14,7 +13,6 @@
     line-height: 22px;
     text-align: center;
     color: #FFFFFF;
-    padding: 0;
 }
 
 .popup__button-save:hover {
