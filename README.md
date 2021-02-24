@@ -14,7 +14,7 @@
 * Медиазапросы
 * JavaScript
 
-[Ссылка на проект](https://olga-arsoba.github.io/mesto/)
+[Ссылка на проект](https://olga-arsoba.github.io/mesto/index.html)
 
 ## Планы по доработке проекта
 
