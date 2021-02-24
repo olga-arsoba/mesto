@@ -1,0 +1,17 @@
+.profile__occupation {
+    font-size: 18px;
+    line-height: 22px;
+    line-height: 100%;
+    color: #FFFFFF;
+    margin-top: 16px;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+@media (min-width: 320px) and (max-width: 880px) {
+    .profile__occupation {
+        font-size: calc(14px + (18 - 14) * ( (100vw - 320px) / (880 - 320)));
+        line-height: calc(17px + (22 - 17) * ( (100vw - 320px) / (880 - 320)));
+        text-align: center;
+    }
+}

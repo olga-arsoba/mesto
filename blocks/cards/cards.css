@@ -1,0 +1,23 @@
+.cards {
+    max-width: 880px;
+    padding-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 282px);
+    gap: 17px;
+    margin: auto;
+}
+
+ @media screen and (max-width: 880px) {
+    .cards {
+        max-width: 581px;
+    }
+ }
+
+ @media screen and (max-width: 581px) {
+    .cards {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+ }
