@@ -8,9 +8,9 @@
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__name/profile__name.css);
 @import url(../blocks/profile/__occupation/profile__occupation.css);
-@import url(../blocks/profile/__button/_add/profile__button_add.css);
-@import url(../blocks/profile/__button/_edit/profile__button_edit.css);
-@import url(../blocks/profile/__button/_vector/profile__button_vector.css);
+@import url(../blocks/profile/__button-add/profile__button-add.css);
+@import url(../blocks/profile/__button-edit/profile__button-edit.css);
+@import url(../blocks/profile/__button-vector/profile__button-vector.css);
 @import url(../blocks/cards/cards.css);
 @import url(../blocks/element/__item/element__item.css);
 @import url(../blocks/element/__like/element__like.css);
