@@ -1,7 +1,21 @@
 .popup__input {
-    border-bottom-color: rgba(84, 84, 84, 0.7);
+    border-bottom: 1px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
     max-width: 358px;
     width: 100%;
-    padding-top: 54px;
-    margin: 0;
+    height: 27px;
+    margin-bottom: 30px;
+    margin-right: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    padding: 0;
+}
+
+@media screen and (max-width: 500px) {
+    .popup__input {
+        font-size: 14px;
+        line-height: 17px;
+    }
 }
