@@ -3,8 +3,8 @@ let popup = document.querySelector('.popup');
 let closePopupButton = document.querySelector('.popup__close');
 let profileName = document.querySelector('.profile__name');
 let profileOccupation = document.querySelector('.profile__occupation');
-let inpupProfileName = document.querySelector('.popup__input_name');
-let inputProfileOccupation = document.querySelector('.popup__input_occupation');
+let inpupProfileName = document.querySelector('.popup__input_type_name');
+let inputProfileOccupation = document.querySelector('.popup__input_type_occupation');
 let profileForm = document.querySelector('.popup__form');
 
 function openPopup() {

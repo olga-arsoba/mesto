@@ -17,6 +17,6 @@
         font-size: calc(27px + (42 - 27) * ( (100vw - 320px) / (768 - 320)));
         line-height: calc(33px + (48 - 33) * ( (100vw - 320px) / (768 - 320)));
         padding-left: 10px;
-        max-width: 282px;
+        max-width: 270px;
     }
 }
