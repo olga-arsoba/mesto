@@ -1,6 +1,5 @@
 .element__like {
-    background-image: url(../../../images/like.svg);
-    background-repeat: no-repeat;
+    background: url(../../../images/like.svg) no-repeat;
     border: none;
     cursor: pointer;
     width: 22px;
@@ -13,4 +12,8 @@
 
 .element__like:hover {
     opacity: .5;
+}
+
+.element__like:focus {
+    outline: none;
 }
