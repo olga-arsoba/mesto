@@ -10,6 +10,7 @@
     padding-right: 36px;
     display: flex;
     flex-direction: column;
+    cursor: default;
 }
 
 @media screen and (max-width: 500px) {
