@@ -15,18 +15,23 @@ const validationConfig = {
     errorClass: 'popup__input-error_active'
 };
 
-enableValidation(validationConfig);
+function closePopupByEscape(evt, popup) {
+    if (evt.key === 'Escape') {
+        closePopup(popup);
+    }
+}
 
 function openPopup(popup) {
-    document.addEventListener('keydown', (evt) => {
-        if (evt.key === 'Escape') {
-            closePopup(popup);
-        }
-    }, {once: true});
+    document.addEventListener('keydown', function(evt) {
+        closePopupByEscape(evt, popup);
+    });
     popup.classList.add('popup_opened');
 }
 
 function closePopup(popup) {
+    document.removeEventListener('keydown', function(evt) {
+        closePopupByEscape(evt, popup);
+    });
     popup.classList.remove('popup_opened');
 }
 
@@ -62,8 +67,6 @@ const enablePopupClosing = () => {
     });
 };
 
-enablePopupClosing();
-
 const cardTemplate = document.querySelector('#card').content;
 const cards = document.querySelector('.cards');
 const popupCard = document.querySelector('.popup_type_card');
@@ -91,8 +94,7 @@ function createCard(cardData) {
         evt.target.classList.toggle('element__like_active');
     });
     cardElement.querySelector('.element__trash').addEventListener('click', function (evt) {
-        const listItem = evt.target.closest('.element');
-        listItem.remove();
+        evt.target.closest('.element').remove();
     });
     cardElementItem.addEventListener('click', function () {
         openImage(cardData.link, cardData.name);
@@ -105,11 +107,6 @@ function addCard(cardElement) {
     cards.prepend(cardElement);
     newCardForm.reset();
 }
-
-initialCards.forEach(function(card) {
-    const cardElement = createCard(card);
-    addCard(cardElement);
-});
 
 function addNewCard(evt) {
     evt.preventDefault();
@@ -139,4 +136,12 @@ function openImage(link, name) {
 
 closePopupImageButton.addEventListener('click', function () {
     closePopup(openPopupImage);
+});
+
+enableValidation(validationConfig);
+enablePopupClosing();
+
+initialCards.forEach(function(card) {
+    const cardElement = createCard(card);
+    addCard(cardElement);
 });
