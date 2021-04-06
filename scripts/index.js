@@ -20,30 +20,27 @@ const validationConfig = {
 const profileFormValidator = new FormValidator(validationConfig, profileForm)
 profileFormValidator.enableValidation()
 
-function closePopupByEscape(evt, popup) {
+function closePopupByEscape(evt) {
+    const openedPopup = document.querySelector('.popup_opened')
     if (evt.key === 'Escape') {
-        closePopup(popup)
+        closePopup(openedPopup)
     }
 }
 
 function openPopup(popup) {
-    document.addEventListener('keydown', function(evt) {
-        closePopupByEscape(evt, popup)
-    })
+    document.addEventListener('keydown', closePopupByEscape)
     popup.classList.add('popup_opened')
 }
 
 function closePopup(popup) {
-    document.removeEventListener('keydown', function(evt) {
-        closePopupByEscape(evt, popup)
-    })
+    document.removeEventListener('keydown', closePopupByEscape)
     popup.classList.remove('popup_opened')
 }
 
 function openProfilePopup() {
     inputProfileName.value = profileName.textContent
     inputProfileOccupation.value = profileOccupation.textContent
-    profileFormValidator.toggleButton()
+    profileFormValidator.toggleButtonState()
     openPopup(popupProfile)
 }
 
@@ -110,7 +107,7 @@ function addNewCard(evt) {
     }
     const cardElement = createCard(cardData)
     addCard(cardElement)
-    cardFormValidator.toggleButton()
+    cardFormValidator.toggleButtonState()
     closePopup(popupCard)
 }
 

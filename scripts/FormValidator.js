@@ -1,7 +1,9 @@
 export class FormValidator {
-    constructor(config, form) {
+    constructor(config, form, inputList, buttonElement) {
         this._config = config
         this._form = form
+        this._inputList = Array.from(this._form.querySelectorAll(this._config.inputSelector))
+        this._buttonElement = this._form.querySelector(this._config.submitButtonSelector)
     }
 
     enableValidation = () => {
@@ -11,35 +13,29 @@ export class FormValidator {
         this._setEventListeners()
     }
 
-    toggleButton = () => {
-        const inputs = Array.from(this._form.querySelectorAll(this._config.inputSelector))
-        const buttonSubmit = this._form.querySelector(this._config.submitButtonSelector)
-        this._toggleButtonState(inputs, buttonSubmit)
-    }
-
     _setEventListeners = () => {
-        const inputs = Array.from(this._form.querySelectorAll(this._config.inputSelector))
-        const buttonSubmit = this._form.querySelector(this._config.submitButtonSelector)
-        this._toggleButtonState(inputs, buttonSubmit)
+        this.toggleButtonState()
 
-        inputs.forEach((input) => {
+        this._inputList.forEach((input) => {
             input.addEventListener('input', () => {
                 this._checkInputValidity(input)
-                this._toggleButtonState(inputs, buttonSubmit)
+                this.toggleButtonState()
             })
         })
     }
 
-    _toggleButtonState = (inputs, buttonSubmit) => {
-        if (this._hasInvalidInput(inputs)) {
-            buttonSubmit.classList.add(this._config.inactiveButtonClass)
+    toggleButtonState = () => {
+        if (this._hasInvalidInput()) {
+            this._buttonElement.setAttribute("disabled", true)
+            this._buttonElement.classList.add(this._config.inactiveButtonClass)
         } else {
-            buttonSubmit.classList.remove(this._config.inactiveButtonClass)
+            this._buttonElement.removeAttribute("disabled")
+            this._buttonElement.classList.remove(this._config.inactiveButtonClass)
         }
     }
 
-    _hasInvalidInput = (inputs) => {
-        return inputs.some((input) => {
+    _hasInvalidInput = () => {
+        return this._inputList.some((input) => {
             return !input.validity.valid
         })
     }
