@@ -22,8 +22,6 @@
 * Webpack
 * Babel
 
-[Ссылка на проект](https://olga-arsoba.github.io/mesto/index.html)
-
 ## Планы по доработке проекта
 
 * Добавить англоязычную версию
