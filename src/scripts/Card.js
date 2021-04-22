@@ -1,9 +1,9 @@
 export class Card {
-    constructor(name, link, templateSelector, openImage) {
+    constructor(name, link, templateSelector, handleCardClick) {
         this._name = name
         this._link = link
         this._templateSelector = templateSelector
-        this._openImage = openImage
+        this._handleCardClick = handleCardClick
     }
 
     getElement = () => {
@@ -48,10 +48,6 @@ export class Card {
         this._getElementTrash().closest('.element').remove()
     }
 
-    _handleOpenImage = () => {
-        this._openImage(this._link, this._name)
-    }
-
     _setEventListeners = () => {
         this._getElementLike().addEventListener('click', () => {
             this._handleLike()
@@ -62,7 +58,7 @@ export class Card {
         })
 
         this._getElementItem().addEventListener('click', () =>  {
-            this._handleOpenImage()
+            this._handleCardClick(this._link, this._name)
         })
     }
 }
