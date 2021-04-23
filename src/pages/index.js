@@ -1,11 +1,11 @@
-import '../pages/index.css'
-import {Card} from './Card.js'
-import {FormValidator} from './FormValidator.js'
-import {Section} from './Section.js'
-import {PopupWithForm} from './PopupWithForm.js'
-import {PopupWithImage} from './PopupWithImage.js'
-import {UserInfo} from './UserInfo.js'
-import {initialCards} from './initial-сards.js'
+import './index.css'
+import {Card} from '../components/Card.js'
+import {FormValidator} from '../components/FormValidator.js'
+import {Section} from '../components/Section.js'
+import {PopupWithForm} from '../components/PopupWithForm.js'
+import {PopupWithImage} from '../components/PopupWithImage.js'
+import {UserInfo} from '../components/UserInfo.js'
+import {initialCards} from '../utils/initial-сards.js'
 
 const showProfilePopupButton = document.querySelector('#edit-profile')
 const popupProfile = document.querySelector('.popup_type_profile')
@@ -28,12 +28,11 @@ const userInfo = new UserInfo({
 const profileFormValidator = new FormValidator(validationConfig, profileForm)
 profileFormValidator.enableValidation()
 
-const profilePopupWithForm = new PopupWithForm('.popup_type_profile', (evt) => {
-    evt.preventDefault()
-    const inputValues = profilePopupWithForm._getInputValues()
-    userInfo.setUserInfo(inputValues)
+const profilePopupWithForm = new PopupWithForm('.popup_type_profile', (values) => {
+    userInfo.setUserInfo(values)
     profilePopupWithForm.close()
 })
+
 profilePopupWithForm.setEventListeners()
 showProfilePopupButton.addEventListener('click', (evt) => {
     const profileInfo = userInfo.getUserInfo()
@@ -64,18 +63,17 @@ section.render()
 const cardFormValidator = new FormValidator(validationConfig, newCardForm)
 cardFormValidator.enableValidation()
 
-const cardPopupWithForm = new PopupWithForm('.popup_type_card', (evt) => {
-    evt.preventDefault()
-    const inputValues = cardPopupWithForm._getInputValues()
+const cardPopupWithForm = new PopupWithForm('.popup_type_card', (values) => {
     const cardData = {
-        name: inputValues.title,
-        link: inputValues.link
+        name: values.title,
+        link: values.link
     }
     const cardElement = createCard(cardData)
     section.addItem(cardElement)
-    cardFormValidator.toggleButtonState()
     cardPopupWithForm.close()
+    cardFormValidator.toggleButtonState()
 })
+
 cardPopupWithForm.setEventListeners()
 addCardButton.addEventListener('click', cardPopupWithForm.open)
 
