@@ -1,8 +1,12 @@
 export class Section {
-    constructor({items, renderer}, selector) {
-        this._items = items
+    constructor(renderer, selector) {
+        this._items = []
         this._renderer = renderer
         this._container = document.querySelector(selector)
+    }
+
+    setItems = (items) => {
+        this._items = items
     }
 
     addItem = (item) => {
@@ -10,7 +14,7 @@ export class Section {
     }
 
     render = () => {
-        this._items.forEach(item => {
+        this._items.reverse().forEach(item => {
             this._renderer(item)
         })
     }

@@ -1,14 +1,22 @@
 export class Card {
-    constructor(name, link, templateSelector, handleCardClick) {
-        this._name = name
-        this._link = link
+    constructor({card, handleTrashClick, handleLikeClick, handleCardClick}, templateSelector, userId) {
+        this._card = card
         this._templateSelector = templateSelector
         this._handleCardClick = handleCardClick
+        this._handleTrashClick = handleTrashClick
+        this._handleLikeClick = handleLikeClick
+        this._userId = userId
+    }
+
+    setCard = (card) => {
+        this._card = card
     }
 
     getElement = () => {
         this._element = this._getTemplate()
-        this._setNameAndLink()
+        this._setData()
+        this._showTrashIconOnlyForMe()
+        this.toggleLikeState()
         this._setEventListeners()
         return this._element
     }
@@ -25,40 +33,60 @@ export class Card {
         return this._element.querySelector('.element__item')
     }
 
-    _setNameAndLink = () => {
-        this._element.querySelector('.element__title').textContent = this._name
+    _setData = () => {
+        this._element.querySelector('.element__title').textContent = this._card.name
         const elementItem = this._getElementItem()
-        elementItem.src = this._link
-        elementItem.alt = this._name
+        elementItem.src = this._card.link
+        elementItem.alt = this._card.name
+        this.setLikeAmount(this.getLikeAmount())
     }
 
-    _getElementLike = () => {
+    toggleLikeState = () => {
+        if(this.isLikedByMe()) {
+            this.getElementLike().classList.add('element__like_active')
+        }
+    }
+
+    isLikedByMe = () => {
+        return this._card.likes.some((like) => {
+            return like._id === this._userId
+        })
+    }
+
+    setLikeAmount = (amount) => {
+        const elementLikeAmount = this._element.querySelector('.element__like-amount')
+        elementLikeAmount.textContent = amount
+    }
+
+    getLikeAmount = () => {
+       return this._card.likes.length
+    }
+
+    _showTrashIconOnlyForMe = () => {
+        if (this._card.owner._id !== this._userId) {
+            this.getElementTrash().remove()
+        }
+    }
+
+    getElementLike = () => {
         return this._element.querySelector('.element__like')
     }
 
-    _handleLike = () => {
-        this._getElementLike().classList.toggle('element__like_active')
-    }
-
-    _getElementTrash = () => {
+    getElementTrash = () => {
         return this._element.querySelector('.element__trash')
     }
 
-    _handleTrash = () => {
-        this._getElementTrash().closest('.element').remove()
-    }
-
     _setEventListeners = () => {
-        this._getElementLike().addEventListener('click', () => {
-            this._handleLike()
+        this.getElementLike().addEventListener('click', () => {
+            this._handleLikeClick()
         })
 
-        this._getElementTrash().addEventListener('click', () => {
-            this._handleTrash()
+        this.getElementTrash()?.addEventListener('click', () => {
+            this._handleTrashClick()
         })
 
         this._getElementItem().addEventListener('click', () =>  {
-            this._handleCardClick(this._link, this._name)
+            this._handleCardClick(this._card.link, this._card.name)
         })
     }
 }

@@ -1,0 +1,21 @@
+.profile__avatar-edit {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile__avatar-edit:hover::after{
+    content:'';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background: url(../../../images/pencil.svg) center no-repeat;
+    background-size: 26px;
+}
+
+.profile__avatar-edit:hover img{
+    opacity: 0.2;
+}
