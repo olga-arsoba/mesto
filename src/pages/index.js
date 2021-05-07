@@ -6,7 +6,8 @@ import {PopupWithForm} from '../components/PopupWithForm.js'
 import {PopupWithImage} from '../components/PopupWithImage.js'
 import {UserInfo} from '../components/UserInfo.js'
 import {Api} from '../components/Api.js'
-import {PopupConfirm} from "../components/PopupConfirm";
+import {PopupConfirm} from '../components/PopupConfirm.js';
+import {validationConfig} from '../utils/constants.js';
 
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-23',
@@ -21,13 +22,6 @@ const popupProfile = document.querySelector('.popup_type_profile')
 const profileForm = popupProfile.querySelector('.popup__form')
 const inputProfileName = document.querySelector('.popup__input_type_name')
 const inputProfileOccupation = document.querySelector('.popup__input_type_occupation')
-const validationConfig = {
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button-submit',
-    inactiveButtonClass: 'popup__button-submit_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active'
-}
 
 const userInfo = new UserInfo({
     profileNameSelector: '.profile__name',
@@ -35,24 +29,17 @@ const userInfo = new UserInfo({
     profileAvatarSelector: '.profile__avatar'
 })
 
-api.getUserInfo()
-    .then(data => {
-        userInfo.setData(data)
-        userInfo.setUserInfo(data)
-        userInfo.setAvatar(data)
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-
 const profileFormValidator = new FormValidator(validationConfig, profileForm)
 profileFormValidator.enableValidation()
 
 const profilePopupWithForm = new PopupWithForm('.popup_type_profile', (values) => {
-    userInfo.setUserInfo(values)
     return api.editUserInfo(values)
-        .then(() => {
+        .then((userData) => {
+            userInfo.setData(userData)
             profilePopupWithForm.close()
+        })
+        .catch((err) => {
+            console.error(err)
         })
 })
 
@@ -82,15 +69,6 @@ const section = new Section(
         section.addItem(createCard(item))
     }, '.cards')
 
-api.getInitialCards()
-    .then(cards => {
-        section.setItems(cards)
-        section.render()
-    })
-    .catch((err) => {
-        console.log(err)
-    });
-
 const cardFormValidator = new FormValidator(validationConfig, newCardForm)
 cardFormValidator.enableValidation()
 
@@ -107,6 +85,9 @@ const cardPopupWithForm = new PopupWithForm('.popup_type_card', (values) => {
             cardPopupWithForm.close()
             cardFormValidator.toggleButtonState()
         })
+        .catch((err) => {
+            console.error(err)
+        })
 })
 
 cardPopupWithForm.setEventListeners()
@@ -120,26 +101,31 @@ function createCard(cardData) {
                 popupConfirm.open(() => {
                     api.deleteCard(cardData._id)
                         .then(res => {
-                            card.getElementTrash().closest('.element').remove()
+                            card.removeCard()
+                        })
+                        .catch((err) => {
+                            console.error(err)
                         })
                 })
             },
             handleLikeClick: () => {
-                if (card.getElementLike().classList.contains('element__like_active')) {
-                    card.setLikeAmount(card.getLikeAmount() - 1)
+                if (card.isLiked()) {
                     api.deleteLikeCard(cardData._id)
                         .then(res => {
-                            card.setCard(res)
+                            card.updateLikes(res)
+                        })
+                        .catch((err) => {
+                            console.error(err)
                         })
                 } else {
-                    card.setLikeAmount(card.getLikeAmount() + 1)
                     api.likeCard(cardData._id)
                         .then(res => {
-                            card.setCard(res)
+                            card.updateLikes(res)
+                        })
+                        .catch((err) => {
+                            console.error(err)
                         })
                 }
-
-                card.getElementLike().classList.toggle('element__like_active')
             },
             handleCardClick: popupWithImage.open,
         },
@@ -160,7 +146,22 @@ const updateAvatarPopup = new PopupWithForm('.popup_type_avatar', (values) => {
             updateAvatarPopup.close()
             updateAvatarValidator.toggleButtonState()
         })
+        .catch((err) => {
+            console.error(err)
+        })
 })
 
 updateAvatarPopup.setEventListeners()
 updateAvatarButton.addEventListener('click', updateAvatarPopup.open)
+
+Promise.all([
+    api.getUserInfo(),
+    api.getInitialCards()
+]).then(data => {
+    const [ userData, cards ] = data
+    userInfo.setData(userData)
+    section.setItems(cards)
+    section.render()
+}).catch((err) => {
+    console.error(err)
+})

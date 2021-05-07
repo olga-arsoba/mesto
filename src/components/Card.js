@@ -14,6 +14,7 @@ export class Card {
 
     getElement = () => {
         this._element = this._getTemplate()
+        this._elementLike = this.getElementLike()
         this._setData()
         this._showTrashIconOnlyForMe()
         this.toggleLikeState()
@@ -43,7 +44,7 @@ export class Card {
 
     toggleLikeState = () => {
         if(this.isLikedByMe()) {
-            this.getElementLike().classList.add('element__like_active')
+            this._elementLike.classList.add('element__like_active')
         }
     }
 
@@ -88,5 +89,19 @@ export class Card {
         this._getElementItem().addEventListener('click', () =>  {
             this._handleCardClick(this._card.link, this._card.name)
         })
+    }
+
+    removeCard = () => {
+        this._element.remove()
+    }
+
+    isLiked = () => {
+        return this._elementLike.classList.contains('element__like_active')
+    }
+
+    updateLikes = (cardData) => {
+        this.setCard(cardData)
+        this.setLikeAmount(this.getLikeAmount())
+        this._elementLike.classList.toggle('element__like_active')
     }
 }
